@@ -1,0 +1,7 @@
+{
+  "lambda": {
+    "role": "codebuilder_lambda_role",
+    "name": "codebuilder",
+    "region": "us-west-2"
+  }
+}

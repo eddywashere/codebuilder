@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - ./clone
+      - echo "[codebuilder][install] starting"
+      - echo "set -e\ncd project\n$CI_SCRIPT_INSTALL" > ./install && chmod +x ./install && ./install
+      - echo "[codebuilder][install] finished"
+  pre_build:
+    commands:
+      - echo "[codebuilder][pre_build] starting"
+      - echo "set -e\ncd project\n$CI_SCRIPT_PRE_BUILD" > ./pre_build && chmod +x ./pre_build && ./pre_build
+      - echo "[codebuilder][pre_build] finished"
+  build:
+    commands:
+      - echo "[codebuilder][build] starting"
+      - echo "set -e\ncd project\n$CI_SCRIPT_BUILD" > ./build && chmod +x ./build && ./build
+      - echo "[codebuilder][build] finished"
+  post_build:
+    commands:
+      - echo "[codebuilder][post_build] starting"
+      - echo "set -e\ncd project\n$CI_SCRIPT_POST_BUILD" > ./post_build && chmod +x ./post_build && ./post_build
+      - echo "[codebuilder][post_build] finished"

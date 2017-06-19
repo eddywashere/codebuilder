@@ -1,0 +1,51 @@
+{
+  "name": "codebuilder",
+  "description": "An AWS CodeBuild project optimized for multiple source repos & any combination of buildspec based scripts from config values",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Eddy Hernandez <edward.d.hernandez@gmail.com> (https://eddywashere.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eddywashere/codebuilder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eddywashere/codebuilder/issues"
+  },
+  "homepage": "https://github.com/eddywashere/codebuilder#readme",
+  "scripts": {
+    "preupload-tools": "mkdir -p tmp && pushd ./tools && zip -9 -r -q ../tmp/tools.zip ./* && popd",
+    "upload-tools": "aws s3 cp ./tmp/tools.zip s3://$BUCKET/tools.zip",
+    "claudia": "claudia --no-optional-dependencies",
+    "claudia:update": "npm run claudia -- update",
+    "tf:create:remote": "aws s3 mb s3://$BUCKET",
+    "tf:init": "pushd ./terraform && terraform init && popd",
+    "tf:plan": "pushd ./terraform && terraform plan && popd",
+    "tf:apply": "pushd ./terraform && terraform apply && popd",
+    "codebuilder": "node ./lib/runCodeBuilder.js",
+    "s3:create-bucket": "aws s3 mb s3://$BUCKET",
+    "s3:configure-bucket": "aws s3 website s3://$BUCKET --index-document index.html --error-document index.html",
+    "s3:upload": "aws s3 sync --acl public-read --sse --delete ./build s3://$BUCKET",
+    "test": "echo 'no tests configured'"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.48.0",
+    "bluebird": "^3.5.0",
+    "bluebird-retry": "^0.11.0",
+    "child-process-promise": "^2.2.1",
+    "claudia-api-builder": "^2.4.2",
+    "claudia-bot-builder": "^2.15.0",
+    "lodash": "^4.17.4",
+    "promise-delay": "^2.1.0"
+  },
+  "devDependencies": {
+    "claudia": "^2.11.0"
+  },
+  "keywords": [
+     "aws",
+     "codebuild",
+     "step functions",
+     "lambda",
+     "ci",
+     "task runner"
+   ]
+}

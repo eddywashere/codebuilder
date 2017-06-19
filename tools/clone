@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -e
+
+mkdir -p project
+
+if [[ -z "${CI_REPO}" ]]; then
+  echo "[ci][install] WARNING: Missing CI_REPO, skipping cloning"
+  exit 0
+fi
+
+echo "installing jq"
+sudo wget -O /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq
+sudo chmod +x /usr/local/bin/jq
+
+echo "[ci][install] fetching GITHUB token"
+GITHUB_TOKEN=`aws --region us-west-2 ssm get-parameters --names codebuild.GITHUB_TOKEN --with-decryption | jq '.Parameters | .[0].Value' | tr -d '"'` > /dev/null 2>&1
+
+
+echo "[ci][install] cloning $CI_COMMIT from $CI_REPO"
+git clone https://$GITHUB_TOKEN@github.com/$CI_REPO.git project > /dev/null 2>&1
+
+echo "[ci][install] project succssfully cloned"
+cd project
+
+echo "[ci][install] checking out commit $CI_COMMIT"
+git checkout $CI_COMMIT
+
+echo "[ci][install] finished cloning"
