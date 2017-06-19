@@ -42,7 +42,7 @@ Run `terraform plan` to see what resources will be provisioned
 npm run tf:plan
 ```
 
-If that looks right, run `terraform apply` to creae the resources in AWS
+If that looks right, run `terraform apply` to create the resources in AWS
 
 ```
 npm run tf:apply
